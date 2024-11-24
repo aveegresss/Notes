@@ -1,0 +1,72 @@
+body {
+    font-family: fontInput;
+    font-size: 20px;
+    text-align: center;
+    background: url("../fonts/background.webp") center center no-repeat  fixed;
+    background-size: cover;
+}
+
+a {
+    font-family: monospace;
+    text-align: center;
+    color: black;
+}
+
+form {
+    max-width: 400px;
+    max-height: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 0;
+    background-color: rgba(255, 255, 255, 0.34);
+    border-radius: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 15px;
+    border: 0;
+    border-radius: 3px;
+    outline: none;
+    color: #000000;
+    font-size: 15px;
+    font-family: "fontInput";
+    text-indent: 10px;
+}
+
+input[type="text"], input[type="password"] {
+    color: #000000 !important;
+    background-color: rgba(255, 255, 255, 0.58) !important;
+}
+
+.windowLogin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    font-size: 15px;
+    font-family: "fontInput";
+    height: 40px;
+    width: 200px;
+    margin: 10px;
+    background-color: #fff;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.58);
+    transform: scale(1.08);
+}
+
+@font-face {
+    font-family: "fontInput";
+    src: url("../fonts/fontInput.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}

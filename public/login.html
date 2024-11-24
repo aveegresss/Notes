@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="icon" type="image/x-icon" href="/fonts/favicon.ico">
+    <title>Авторизация</title>
+</head>
+<body>
+<h2>Авторизация:</h2>
+<form id="loginForm">
+    <div class="windowLogin">
+        <input class="login" type="text" id="username" placeholder="Имя пользователя.." autocomplete="off">
+        <input class="login" type="password" id="password" placeholder="Пароль.." autocomplete="off">
+    </div>
+    <button type="submit">Войти</button>
+</form>
+<p><a href="index.html">Нет аккаунта? Зарегистрироваться:</a></p>
+<script>
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            localStorage.setItem('token', result.token);
+            alert('Login successful');
+            window.location.href = 'user.html';
+        } else {
+            alert(result.message || 'Error');
+        }
+    });
+</script>
+</body>
+</html>

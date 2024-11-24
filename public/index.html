@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" type="image/x-icon" href="/fonts/favicon.ico">
+    <title>Регистрация</title>
+</head>
+<body>
+<h2>Регистрация:</h2>
+<form id="registerForm">
+    <div class="windowLogin">
+        <input class="login" type="text" id="username" placeholder="Имя пользователя.." autocomplete="off">
+        <input class="login" type="password" id="password" placeholder="Пароль.." autocomplete="off">
+    </div>
+    <button type="submit">Зарегистрироваться</button>
+</form>
+<p><a href="login.html">Уже есть аккаунт? Войти:</a></p>
+<script>
+    const registerForm = document.getElementById('registerForm');
+
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const response = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('Registration successful');
+            window.location.href = 'login.html';
+        } else {
+            alert(result.message || 'Error');
+        }
+    });
+</script>
+</body>
+</html>

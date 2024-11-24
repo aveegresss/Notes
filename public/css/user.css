@@ -1,0 +1,76 @@
+body {
+    font-family: fontInput;
+    font-size: 20px;
+    text-align: center;
+    background: url("../fonts/background.webp") center center no-repeat  fixed;
+    background-size: cover;
+}
+
+p {
+    font-family: fontInput;
+    font-size: 30px;
+    text-align: center;
+}
+
+h2 {
+    font-family: fontInput;
+    font-size: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+textarea {
+    width: 400px;
+    height: 60px;
+    border: 0;
+    border-radius: 3px;
+    outline: none;
+    color: #000000;
+    font-size: 15px;
+    font-family: "fontInput";
+    text-indent: 10px;
+    padding-top: 10px;
+    color: #000000 !important;
+    background-color: rgba(255, 255, 255, 0.58) !important;
+    margin: 10px;
+}
+
+ul {
+    list-style-type: none;
+    background-color: rgba(255, 255, 255, 0.32);
+    width: 600px;
+    text-align: center;
+    margin: auto;
+    font-size: 20px;
+    font-family: "fontInput";
+}
+
+button {
+    font-size: 15px;
+    font-family: "fontInput";
+    height: 73px;
+    width: 150px;
+    background-color: #fff;
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.58);
+    transform: scale(1.08);
+}
+
+@font-face {
+    font-family: "fontInput";
+    src: url("../fonts/fontInput.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}

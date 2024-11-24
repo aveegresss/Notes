@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/user.css">
+    <link rel="icon" type="image/x-icon" href="/fonts/favicon.ico">
+    <title>Профиль пользователя</title>
+</head>
+<body>
+<p id="welcomeMessage"></p>
+<h2>Ваши заметки:</h2>
+<div id="notesSection">
+    <form id="addNoteForm">
+        <textarea type="text" id="newNoteContent" placeholder="Введите заметку.."></textarea>
+        <button type="submit">Добавить</button>
+    </form>
+    <ul id="notesList"></ul>
+</div>
+<button id="logout">Выйти</button>
+<script>
+    const messageElement = document.getElementById('welcomeMessage');
+    const logoutButton = document.getElementById('logout');
+    const token = localStorage.getItem('token');
+    const notesList = document.getElementById('notesList');
+    const addNoteForm = document.getElementById('addNoteForm');
+    const newNoteContent = document.getElementById('newNoteContent');
+
+    if (!token) {
+        alert('You need to log in first.');
+        window.location.href = 'login.html';
+    }
+
+    fetch('http://localhost:3000/user', {
+        method: 'GET',
+        headers: { 'Authorization': token }
+    })
+        .then(response => response.json())
+        .then(data => {
+            messageElement.textContent = data.message;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            messageElement.textContent = 'Failed to load user data.';
+        });
+
+    logoutButton.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+    });
+
+    async function deleteNote(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/notes/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': token }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            await loadNotes();
+        } catch (error) {
+            console.error('Error deleting note:', error);
+            alert('Failed to delete note. Please try again.');
+        }
+    }
+
+    async function loadNotes() {
+        try {
+            const response = await fetch('http://localhost:3000/notes', {
+                method: 'GET',
+                headers: { 'Authorization': token }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const notes = await response.json();
+            notesList.innerHTML = '';
+            notes.forEach(note => {
+                const li = document.createElement('li');
+                li.textContent = `${note.content}`;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.style.margin = "30px";
+                deleteButton.style.height = "40px";
+                deleteButton.textContent = 'Удалить';
+                deleteButton.onclick = () => deleteNote(note.id);
+
+                li.appendChild(deleteButton);
+                notesList.appendChild(li);
+            });
+        } catch (error) {
+            console.error('Error fetching notes:', error);
+            alert('Failed to load notes. Please try again later.');
+        }
+    }
+
+    addNoteForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const content = newNoteContent.value;
+
+        if (!content.trim()) {
+            return alert("Заметка не может быть пустой.");
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/notes', {
+                method: 'POST',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при добавлении заметки');
+            }
+
+            const newNote = await response.json();
+
+            loadNotes();
+
+            newNoteContent.value = '';
+        } catch (error) {
+            console.error('Error adding note:', error);
+            alert('Ошибка при добавлении заметки.');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadNotes();
+    });
+</script>
+</body>
+</html>
